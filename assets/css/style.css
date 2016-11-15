@@ -1,0 +1,54 @@
+@font-face {
+	font-family: 'MarioFont';
+	src: url('../images/MarioFont.ttf');
+}
+
+.attackButton {
+	height: 50px;
+	font-size: 16pt;
+	width: 110px;
+}
+
+body {
+	font-family: MarioFont;
+}
+
+button {
+	font-family: Mariofont;
+}
+
+.characterButton {
+	height: 100px;
+	width: 110px;
+}
+
+footer {
+	bottom: 5px;
+	font-size: 10pt;
+	left: 5px;
+	position: fixed;
+}
+
+#gameArea {
+
+}
+
+header {
+	float: right;
+	font-size: 35pt;
+}
+
+h1 {
+	font-size: 18pt;
+}
+
+img {
+	height: 50px;
+	width: 50px;
+}
+
+.restartButton {
+	height: 50px;
+	font-size: 16pt;
+	width: 140px;
+}
