@@ -2,33 +2,37 @@ var game = {
 	characters: [
 		mario = {
 			attack: "8",
+			color: "red",
 			health: "120",
 			name: "Mario",
 			src: "assets/images/Mario.png"
 		},
 		luigi = {
-			attack: "5",			
+			attack: "5",
+			color: "green",			
 			health: "100",
 			name: "Luigi",
 			src: "assets/images/Luigi.png"
 		},
 		yoshi = {
-			attack: "20",			
+			attack: "20",
+			color: "white",		
 			health: "150",
-			name: "Peach",
+			name: "yoshi",
 			src: "assets/images/Yoshi.png"
 		},
 		dk = {
-			attack: "25",			
+			attack: "25",
+			color: "brown",		
 			health: "180",
-			name: "Yoshi",
+			name: "Donkey Kong",
 			src: "assets/images/DK.png"
 		}
 	],
 
 	attackFunction: function() {
 		game.currentDefender.health = game.currentDefender.health - game.chosenCharacter.currentAttackPower;
-		$(game.currentDefender).html(game.currentDefender.id).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(game.currentDefender.health);
+		$(game.currentDefender).html(game.currentDefender.id).append("<br><img class='characterImage' src=\""+game.currentDefender.image+"\">").append("<br>Health: ").append(game.currentDefender.health);
 		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.currentAttackPower + " damage.");
 		game.chosenCharacter.currentAttackPower = game.chosenCharacter.currentAttackPower + game.chosenCharacter.initalAttackPower;
 
@@ -46,7 +50,7 @@ var game = {
 			$("#gameArea").html("<h1 class='resultWin'>Congratulations... you won!</h1>").append("<button class='restartButton'>Restart</button>");
 		}
 
-		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(game.chosenCharacter.health);
+		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br><img class='characterImage' src=\""+game.chosenCharacter.image+"\">").append("<br>Health: ").append(game.chosenCharacter.health);
 		if (game.chosenCharacter.health <= 0) {
 			$("#gameArea").html("<br><h1 class='resultLoss'>You have been defeated... GAME OVER!!!</h1>").append("<button class='restartButton'>Restart</button>")
 			$(".attackButton").remove();
@@ -79,7 +83,7 @@ var game = {
 		$.each(game.characters, function() {
 			var characterButton = $("<button class='characterButton'>");
 			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-health", this.health).attr("data-image", this.src);
-			characterButton.append(this.name).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(this.health);
+			characterButton.append(this.name).append("<br><img class='characterImage' src=\""+$(this).attr("src")+"\">").append("<br>Health: ").append(this.health);
 			$("#characterSelection").append(characterButton);
 		})
 	}
