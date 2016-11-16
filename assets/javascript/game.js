@@ -10,25 +10,25 @@ var game = {
 			attack: "5",			
 			health: "100",
 			name: "Luigi",
-			src: "assets/images/Luigi.jpg"
+			src: "assets/images/Luigi.png"
 		},
-		peach = {
+		yoshi = {
 			attack: "20",			
 			health: "150",
 			name: "Peach",
-			src: "assets/images/Peach.jpg"
+			src: "assets/images/Yoshi.png"
 		},
-		yoshi = {
+		dk = {
 			attack: "25",			
 			health: "180",
 			name: "Yoshi",
-			src: "assets/images/Yoshi.jpg"
+			src: "assets/images/DK.png"
 		}
 	],
 
 	attackFunction: function() {
 		game.currentDefender.health = game.currentDefender.health - game.chosenCharacter.currentAttackPower;
-		$(game.currentDefender).html(game.currentDefender.id).append("<br>Health: ").append(game.currentDefender.health);
+		$(game.currentDefender).html(game.currentDefender.id).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(game.currentDefender.health);
 		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.currentAttackPower + " damage.");
 		game.chosenCharacter.currentAttackPower = game.chosenCharacter.currentAttackPower + game.chosenCharacter.initalAttackPower;
 
@@ -43,18 +43,32 @@ var game = {
 		}
 
 		if (game.winCounter === game.characters.length - 1) {
-			$("#gameArea").html("<h1>YOU WIN!</h1>").append("<button class='restartButton'>Restart</button>");
+			$("#gameArea").html("<h1 class='resultWin'>Congratulations... you won!</h1>").append("<button class='restartButton'>Restart</button>");
 		}
 
-		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br>Health: ").append(game.chosenCharacter.health);
+		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(game.chosenCharacter.health);
 		if (game.chosenCharacter.health <= 0) {
-			$("#gameArea").html("<h1>You have been defeated... GAME OVER!!!</h1><br>").append("<button class='restartButton'>Restart</button>")
+			$("#gameArea").html("<br><h1 class='resultLoss'>You have been defeated... GAME OVER!!!</h1>").append("<button class='restartButton'>Restart</button>")
 			$(".attackButton").remove();
 		}
 	},
 
+	chooseCharacter: function() {
+		game.chosenCharacter.currentAttackPower = game.chosenCharacter.initalAttackPower;
+		$("#instructions").hide();
+		$("#enemies").append($("button.characterButton"));
+		$("#yourCharacter").append(game.chosenCharacter);	
+	},
+
+	chooseEnemy: function() {
+		game.defenderLock = true;
+		$("#defender").append(game.currentDefender);
+		var attack = $("<button class='attackButton'>Attack</button>");
+		$("#fight").append(attack);
+		$("#gameArea").html("");
+	},
+
 	newGame: function() {
-		game.characterLock = false;
 		game.defenderLock = false;
 		game.winCounter = 0;
 		$("#gameArea").html("");
@@ -64,8 +78,8 @@ var game = {
 
 		$.each(game.characters, function() {
 			var characterButton = $("<button class='characterButton'>");
-			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-health", this.health);
-			characterButton.append(this.name).append("<br>Health: ").append(this.health);
+			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-health", this.health).attr("data-image", this.src);
+			characterButton.append(this.name).append("<br><img class='characterImage' src='assets/images/Mario.png'>").append("<br>Health: ").append(this.health);
 			$("#characterSelection").append(characterButton);
 		})
 	}
@@ -74,26 +88,21 @@ var game = {
 $(document).ready(function(){
 	game.newGame();
 
-	$(document).on("click", ".characterButton", function(){
-		if (game.characterLock === false){
-			game.characterLock = true;
-			game.chosenCharacter = this;
-			game.chosenCharacter.initalAttackPower = $(this).data("attack");
-			game.chosenCharacter.currentAttackPower = game.chosenCharacter.initalAttackPower;
-			game.chosenCharacter.health = $(this).data("health");
-			$("#instructions").hide();
-			$("#enemies").append($("button.characterButton"));
-			$("#yourCharacter").append(game.chosenCharacter);
-		}
-		if (game.characterLock === true && game.defenderLock === false && this != game.chosenCharacter) {
-			game.defenderLock = true;
+	$("#characterSelection").on("click", ".characterButton", function(){
+		game.chosenCharacter = this;
+		game.chosenCharacter.image = $(this).data("image");
+		game.chosenCharacter.initalAttackPower = $(this).data("attack");
+		game.chosenCharacter.health = $(this).data("health");
+		game.chooseCharacter();
+	});	
+
+	$("#enemies").on("click", ".characterButton", function(){
+		if (game.defenderLock === false) {
 			game.currentDefender = this;
+			game.currentDefender.image = $(this).data("image");
 			game.currentDefender.currentAttackPower = $(this).data("attack");
 			game.currentDefender.health = $(this).data("health");
-			$("#defender").append(game.currentDefender);
-			var attack = $("<button class='attackButton'>Attack</button>");
-			$("#fight").append(attack);
-			$("#gameArea").html("");
+			game.chooseEnemy();
 		}
 	});
 
