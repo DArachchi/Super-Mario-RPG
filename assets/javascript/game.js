@@ -1,29 +1,29 @@
 var game = {
 	characters: [
 		mario = {
-			attack: "8",
-			color: "red",
+			attack: "5",
+			counter: "10",
 			health: "120",
 			name: "Mario",
 			src: "assets/images/Mario.png"
 		},
 		luigi = {
-			attack: "5",
-			color: "green",			
+			attack: "10",
+			counter: "10",			
 			health: "100",
 			name: "Luigi",
 			src: "assets/images/Luigi.png"
 		},
 		yoshi = {
-			attack: "20",
-			color: "white",		
+			attack: "15",
+			counter: "20",	
 			health: "150",
 			name: "yoshi",
 			src: "assets/images/Yoshi.png"
 		},
 		dk = {
-			attack: "25",
-			color: "brown",		
+			attack: "20",
+			counter: "25",	
 			health: "180",
 			name: "Donkey Kong",
 			src: "assets/images/DK.png"
@@ -33,7 +33,7 @@ var game = {
 	attackFunction: function() {
 		game.currentDefender.health = game.currentDefender.health - game.chosenCharacter.currentAttackPower;
 		$(game.currentDefender).html(game.currentDefender.id).append("<br><img class='characterImage' src=\""+game.currentDefender.image+"\">").append("<br>Health: ").append(game.currentDefender.health);
-		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.currentAttackPower + " damage.");
+		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.counterAttackPower + " damage.");
 		game.chosenCharacter.currentAttackPower = game.chosenCharacter.currentAttackPower + game.chosenCharacter.initalAttackPower;
 
 		if (game.currentDefender.health <= 0) {
@@ -43,7 +43,7 @@ var game = {
 			$(".attackButton").remove();
 			game.defenderLock = false;
 		} else {
-			game.chosenCharacter.health = game.chosenCharacter.health - game.currentDefender.currentAttackPower;
+			game.chosenCharacter.health = game.chosenCharacter.health - game.currentDefender.counterAttackPower;
 		}
 
 		if (game.winCounter === game.characters.length - 1) {
@@ -82,7 +82,7 @@ var game = {
 
 		$.each(game.characters, function() {
 			var characterButton = $("<button class='characterButton'>");
-			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-health", this.health).attr("data-image", this.src);
+			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-counter", this.counter).attr("data-health", this.health).attr("data-image", this.src);
 			characterButton.append(this.name).append("<br><img class='characterImage' src=\""+$(this).attr("src")+"\">").append("<br>Health: ").append(this.health);
 			$("#characterSelection").append(characterButton);
 		})
@@ -104,7 +104,7 @@ $(document).ready(function(){
 		if (game.defenderLock === false) {
 			game.currentDefender = this;
 			game.currentDefender.image = $(this).data("image");
-			game.currentDefender.currentAttackPower = $(this).data("attack");
+			game.currentDefender.counterAttackPower = $(this).data("counter");
 			game.currentDefender.health = $(this).data("health");
 			game.chooseEnemy();
 		}
