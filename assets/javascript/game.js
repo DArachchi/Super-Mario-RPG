@@ -26,14 +26,43 @@ var game = {
 		}
 	],
 
-	startGame: function() {
+	attackFunction: function() {
+		game.currentDefender.health = game.currentDefender.health - game.chosenCharacter.currentAttackPower;
+		$(game.currentDefender).html(game.currentDefender.id).append("<br>Health: ").append(game.currentDefender.health);
+		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.currentAttackPower + " damage.");
+		game.chosenCharacter.currentAttackPower = game.chosenCharacter.currentAttackPower + game.chosenCharacter.initalAttackPower;
+
+		if (game.currentDefender.health <= 0) {
+			game.winCounter = game.winCounter + 1;
+			$("#gameArea").html("You have defeated " + game.currentDefender.id + ". Choose another enemy to attack.")
+			$(game.currentDefender).remove();
+			$(".attackButton").remove();
+			game.defenderLock = false;
+		} else {
+			game.chosenCharacter.health = game.chosenCharacter.health - game.currentDefender.currentAttackPower;
+		}
+
+		if (game.winCounter === game.characters.length - 1) {
+			$("#gameArea").html("<h1>YOU WIN!</h1>").append("<button class='restartButton'>Restart</button>");
+		}
+
+		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br>Health: ").append(game.chosenCharacter.health);
+		if (game.chosenCharacter.health <= 0) {
+			$("#gameArea").html("<h1>You have been defeated... GAME OVER!!!</h1><br>").append("<button class='restartButton'>Restart</button>")
+			$(".attackButton").remove();
+		}
+	},
+
+	newGame: function() {
 		game.characterLock = false;
 		game.defenderLock = false;
-		game.defeatedCounter = 0;
+		game.winCounter = 0;
+		$("#gameArea").html("");
 		$(".characterButton").remove();
+		$("#instructions").show();
 		var characterButton;
 
-		$.each(game.characters, function(i, val) {
+		$.each(game.characters, function() {
 			var characterButton = $("<button class='characterButton'>");
 			characterButton.attr("id", this.name).attr("data-attack", this.attack).attr("data-health", this.health);
 			characterButton.append(this.name).append("<br>Health: ").append(this.health);
@@ -43,7 +72,7 @@ var game = {
 }	
 
 $(document).ready(function(){
-	game.startGame();
+	game.newGame();
 
 	$(document).on("click", ".characterButton", function(){
 		if (game.characterLock === false){
@@ -52,6 +81,7 @@ $(document).ready(function(){
 			game.chosenCharacter.initalAttackPower = $(this).data("attack");
 			game.chosenCharacter.currentAttackPower = game.chosenCharacter.initalAttackPower;
 			game.chosenCharacter.health = $(this).data("health");
+			$("#instructions").hide();
 			$("#enemies").append($("button.characterButton"));
 			$("#yourCharacter").append(game.chosenCharacter);
 		}
@@ -68,36 +98,10 @@ $(document).ready(function(){
 	});
 
 	$(document).on("click", ".attackButton", function(){
-		game.currentDefender.health = game.currentDefender.health - game.chosenCharacter.currentAttackPower;
-		$(game.currentDefender).html(game.currentDefender.id).append("<br>Health: ").append(game.currentDefender.health);
-		$("#gameArea").html("<br>You attacked " + game.currentDefender.id + " for " + game.chosenCharacter.currentAttackPower + " damage.<br>" + game.currentDefender.id + " attacked you back for " + game.currentDefender.currentAttackPower + " damage.");
-		game.chosenCharacter.currentAttackPower = game.chosenCharacter.currentAttackPower + game.chosenCharacter.initalAttackPower;
-
-		if (game.currentDefender.health <= 0) {
-			game.defeatedCounter = game.defeatedCounter + 1;
-			$("#gameArea").html("You have defeated " + game.currentDefender.id + ". Choose another enemy to attack.")
-			$(game.currentDefender).remove();
-			$(".attackButton").remove();
-			game.defenderLock = false;
-		} else {
-			game.chosenCharacter.health = game.chosenCharacter.health - game.currentDefender.currentAttackPower;
-		}
-
-		if (game.defeatedCounter === game.characters.length - 1) {
-			$("#gameArea").html("<h1>YOU WIN!</h1>").append("<button class='restartButton'>Restart</button>");
-		}
-
-		$(game.chosenCharacter).html(game.chosenCharacter.id).append("<br>Health: ").append(game.chosenCharacter.health);
-		if (game.chosenCharacter.health <= 0) {
-			$("#gameArea").html("You have been defeated... GAME OVER!!!").append("<button class='restartButton'>Restart</button>")
-			$(".attackButton").remove();
-		}
+		game.attackFunction();
 	});
 
 	$(document).on("click", ".restartButton", function() {
-		$(game.chosenCharacter).remove();
-		$("#gameArea").html("");
-		game.startGame();
+		game.newGame();
 	})
-
 })

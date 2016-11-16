@@ -9,11 +9,20 @@
 	width: 110px;
 }
 
+.attackButton:hover {
+	border: 4px solid #ff0000;
+}
+
 body {
+	background-image: url('../images/Background.jpg');
+	background-position: fixed;
+	background-repeat: no-repeat;
+	color: #ffffe0;
 	font-family: MarioFont;
 }
 
 button {
+	border: 2px solid #0000ff;
 	font-family: Mariofont;
 }
 
@@ -22,33 +31,70 @@ button {
 	width: 110px;
 }
 
+.characterImage {
+	height: 50px;
+	width: 50px;
+}
+
+.characterButton:hover {
+	border: 4px solid #ff0000;
+}
+
+.colorBlue {
+	color: #0000ff;
+}
+
+.colorGreen {
+	color: #00ff00;
+}
+
+.colorRed {
+	color:#ff0000;
+}
+
+.colorYellow {
+	color: #ffff00;
+}
+
+.floatLeft {
+	float:left;
+}
+
 footer {
-	bottom: 5px;
+	bottom: 0px;
+	color: #ffffff;
 	font-size: 10pt;
-	left: 5px;
+	left: 750px;
 	position: fixed;
 }
 
 #gameArea {
-
 }
 
 header {
-	float: right;
-	font-size: 35pt;
+	float: left;
+	font-size: 40pt;
+	left: 590px;
+	position: absolute;
+}
+
+.headerImage {
+		height: 200px;
+		width: 400px;
 }
 
 h1 {
 	font-size: 18pt;
 }
 
-img {
-	height: 50px;
-	width: 50px;
-}
-
 .restartButton {
 	height: 50px;
 	font-size: 16pt;
 	width: 140px;
+}
+
+.wrapper {
+	left: 20px;
+	position: absolute;
+	top: 20px;
 }
