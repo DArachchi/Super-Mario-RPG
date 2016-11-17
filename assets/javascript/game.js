@@ -1,30 +1,30 @@
 var game = {
 	characters: [
 		mario = {
-			attack: "5",
-			counter: "10",
-			health: "120",
+			attack: "8",
+			counter: "12",
+			health: "170",
 			name: "Mario",
 			src: "assets/images/Mario.png"
 		},
 		luigi = {
 			attack: "10",
 			counter: "10",			
-			health: "100",
+			health: "160",
 			name: "Luigi",
 			src: "assets/images/Luigi.png"
 		},
 		yoshi = {
-			attack: "15",
-			counter: "20",	
-			health: "150",
+			attack: "7",
+			counter: "14",	
+			health: "180",
 			name: "yoshi",
 			src: "assets/images/Yoshi.png"
 		},
 		dk = {
-			attack: "20",
-			counter: "25",	
-			health: "180",
+			attack: "4",
+			counter: "18",	
+			health: "200",
 			name: "Donkey Kong",
 			src: "assets/images/DK.png"
 		}
